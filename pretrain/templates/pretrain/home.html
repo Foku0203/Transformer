@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <title>PyTorch Transformer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root { --primary:#6c63ff; --bg:#f5f7fb; --card:#ffffff; --text:#222; --muted:#666; }
+    *{box-sizing:border-box}
+    body{margin:0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; background:var(--bg); color:var(--text);}
+    .wrap{min-height:100dvh; display:grid; place-items:center; padding:24px;}
+    .card{width:min(420px, 92vw); background:var(--card); border-radius:16px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,.08);}
+    h1{font-size:22px; text-align:center; margin:0 0 16px; color:#4a46c5}
+    .tabs{display:flex; gap:8px; justify-content:center; margin-bottom:16px}
+    .tab{padding:8px 16px; border-radius:10px; border:1px solid #ddd; background:#eef0ff; color:#333; cursor:pointer; font-weight:600}
+    .tab.active{background:var(--primary); color:#fff; border-color:var(--primary)}
+    .field{margin:14px 0}
+    .label{display:block; font-size:13px; color:var(--muted); margin-bottom:6px}
+    input[type="file"], input[type="number"]{width:100%;}
+    input[type="number"]{padding:10px 12px; border:1px solid #ddd; border-radius:10px}
+    .btn{width:100%; padding:12px 16px; background:var(--primary); color:#fff; border:none; border-radius:12px; font-weight:700; cursor:pointer}
+    .msg{margin:10px 0 0; color:#0a7; font-size:14px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>PyTorch Transformer</h1>
+
+      <div class="tabs">
+        <button class="tab active" type="button" id="tab-train">Train</button>
+        <button class="tab" type="button" id="tab-predict">Predict</button>
+      </div>
+
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="hidden" name="mode" id="mode" value="train">
+
+        <div class="field">
+          <span class="label">Training Data File</span>
+          <input type="file" name="data_file" accept=".csv,.txt,.json">
+        </div>
+
+        <div class="field" id="epochs-field">
+          <span class="label">Epochs</span>
+          <input type="number" name="epochs" value="10" min="1">
+        </div>
+
+        <button class="btn" type="submit" id="submit-btn">Start Training</button>
+
+        {% if messages %}
+          <div class="msg">
+            {% for m in messages %}{{ m }}{% if not forloop.last %}<br>{% endif %}{% endfor %}
+          </div>
+        {% endif %}
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const tabTrain   = document.getElementById('tab-train');
+    const tabPredict = document.getElementById('tab-predict');
+    const mode       = document.getElementById('mode');
+    const epochs     = document.getElementById('epochs-field');
+    const submitBtn  = document.getElementById('submit-btn');
+
+    function setMode(m){
+      mode.value = m;
+      if(m === 'train'){
+        tabTrain.classList.add('active'); tabPredict.classList.remove('active');
+        epochs.style.display = '';
+        submitBtn.textContent = 'Start Training';
+      }else{
+        tabPredict.classList.add('active'); tabTrain.classList.remove('active');
+        epochs.style.display = 'none';
+        submitBtn.textContent = 'Start Predict';
+      }
+    }
+    tabTrain.onclick   = () => setMode('train');
+    tabPredict.onclick = () => setMode('predict');
+  </script>
+</body>
+</html>
