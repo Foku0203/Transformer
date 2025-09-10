@@ -1,21 +1,31 @@
-# Byte-compiled / cache
+# =========================
+# Python bytecode / cache
+# =========================
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 
+# =========================
 # Virtual environment
+# =========================
 venv/
 .env/
 .venv/
 
-# Jupyter Notebook checkpoints
+# =========================
+# Jupyter Notebook
+# =========================
 .ipynb_checkpoints/
 
+# =========================
 # Logs
+# =========================
 *.log
 
-# Data / models
+# =========================
+# Data / Models / Checkpoints
+# =========================
 data/
 *.csv
 *.zip
@@ -23,6 +33,24 @@ data/
 *.pt
 *.pth
 
-# OS files
+# =========================
+# Django specific
+# =========================
+# Local SQLite database
+db.sqlite3
+
+# Django migrations (ถ้าไม่อยาก track)
+# migrations/ จะเก็บไฟล์การย้าย schema
+# ปกติควรเก็บ migration ไว้ แต่ถ้าเป็นโปรเจกต์ทดลอง
+# สามารถ ignore ได้ (แนะนำคงไว้ใน production)
+# */migrations/
+
+# Static & Media (ไฟล์ที่ collect / upload แล้ว)
+staticfiles/
+media/
+
+# =========================
+# OS specific
+# =========================
 .DS_Store
 Thumbs.db
